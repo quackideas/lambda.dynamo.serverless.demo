@@ -14,13 +14,7 @@ resources:
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S
-          - AttributeName: firstName
-            AttributeType: S
-          - AttributeName: lastName
-            AttributeType: S
           - AttributeName: email
-            AttributeType: S
-          - AttributeName: serialNumbers
             AttributeType: S
         KeySchema:
           - AttributeName: id
