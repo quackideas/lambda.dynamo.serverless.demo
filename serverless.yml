@@ -29,7 +29,19 @@ resources:
             AttributeType: S
         KeySchema:
           -
+            AttributeName: id
+            KeyType: HASH
+          -
+            AttributeName: firstName
+            KeyType: HASH
+          -
+            AttributeName: lastName
+            KeyType: HASH
+          -
             AttributeName: email
+            KeyType: HASH
+          -
+            AttributeName: serialNumbers
             KeyType: HASH
 
         ProvisionedThroughput:
