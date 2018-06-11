@@ -1,0 +1,54 @@
+service: cloud-ams-api
+
+provider:
+  name: aws
+  runtime: nodejs6.10
+  region: us-east-1
+  stage: dev
+
+resources:
+  Resources:
+    CloudAmsDB:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: id
+            AttributeType: S
+          -
+            AttributeName: firstName
+            AttributeType: S
+          -
+            AttributeName: lastName
+            AttributeType: S
+          -
+            AttributeName: email
+            AttributeType: S
+          -
+            AttributeName: serialNumbers
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: email
+            KeyType: HASH
+
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
+        TableName: ProductRegistration
+
+functions:
+  getProductRegistrationsByEmail:
+    handler: getProductRegistrationsByEmail.handler
+    events:
+      - http:
+          path: getProductRegistrationsByEmail
+          method: get
+          cors: true
+  addProductRegistrationByEmail:
+    handler: addProductRegistrationByEmail.handler
+    events:
+      - http:
+          path: addProductRegistrationByEmail
+          method: post
+          cors: true
