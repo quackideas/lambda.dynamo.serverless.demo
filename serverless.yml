@@ -8,7 +8,7 @@ provider:
 
 resources:
   Resources:
-    CloudAmsDB:
+    BWTestDB:
       Type: 'AWS::DynamoDB::Table'
       Properties:
         AttributeDefinitions:
