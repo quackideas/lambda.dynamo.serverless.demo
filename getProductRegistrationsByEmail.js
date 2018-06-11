@@ -48,46 +48,11 @@ exports.handler = (event, context, callback) => {
                 } else {
 
                     if (data.Count > 0) {
-                        var _item = data.Items[0],
-                            _originalMappingProfile = null;
-
-                        if (event.authorizationHeader !== undefined) {
-                            _item.Headers = isString(_item.Headers) ?  JSON.parse(_item.Headers) : _item.Headers;
-                            _item.Headers['Authorization'] = event.authorizationHeader ;
-                        }
-
-                        //if a mapping profile already exists, we copy to original mapping profile property because
-                        //we can use it later for processing.  This use case is for when we get PUT mapping profiles and
-                        //we need to get the
-                        if (event.mappingProfile !== undefined) {
-                            _originalMappingProfile = event.mappingProfile;
-                        }
-
-                        //we need to set mappingId if this is a PUT operation in order to get the data and structure
-                        //coming back from destination. For example, if we are going to update Person data on Aura eStore
-                        //then we first get the data by calling /Person/GetSingleById/#PersonId#, then we will remap object coming
-                        //from client to this object and the update.
+                        var _item = data.Items;
 
 
                         callback(null, {
-                            logId: event.logId,
-                            exists: true,
-                            mappingProfile: _item,
-                            mappingRulesExist: (_item.MappingRules !== undefined) ? true : false,
-                            clientId: event.clientId,
-                            destinationObject: (_item.Mappings !== undefined) ? _item.Mappings : null,
-                            getPostMappingForInsert: event.getPostMappingForInsert,
-                            clientRecordId: event.clientRecordId,
-                            auraRecordId: event.auraRecordId,
-                            authenticationRequired: _item.RequiresAuthentication,
-                            stagingRecordId: event.stagingRecordId,
-                            sourceObject: _sourceObject,
-                            sourceId: event.sourceId,
-                            newRecordId: event.newRecordId,
-                            type:event.type,
-                            saveType: event.saveType,
-                            mappingId: event.mappingId,
-                            orginalMappingProfile: _originalMappingProfile
+                            data: _item
                         });
                     } else {
                         callback(null, {
