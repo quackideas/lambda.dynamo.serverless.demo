@@ -8,42 +8,25 @@ provider:
 
 resources:
   Resources:
-    BWTestDB:
+    productRegistrationTable:
       Type: 'AWS::DynamoDB::Table'
       Properties:
         AttributeDefinitions:
-          -
-            AttributeName: id
+          - AttributeName: id
             AttributeType: S
-          -
-            AttributeName: firstName
+          - AttributeName: firstName
             AttributeType: S
-          -
-            AttributeName: lastName
+          - AttributeName: lastName
             AttributeType: S
-          -
-            AttributeName: email
+          - AttributeName: email
             AttributeType: S
-          -
-            AttributeName: serialNumbers
+          - AttributeName: serialNumbers
             AttributeType: S
         KeySchema:
-          -
-            AttributeName: id
+          - AttributeName: id
             KeyType: HASH
-          -
-            AttributeName: firstName
-            KeyType: HASH
-          -
-            AttributeName: lastName
-            KeyType: HASH
-          -
-            AttributeName: email
-            KeyType: HASH
-          -
-            AttributeName: serialNumbers
-            KeyType: HASH
-
+          - AttributeName: email
+            KeyType: RANGE
         ProvisionedThroughput:
           ReadCapacityUnits: 5
           WriteCapacityUnits: 5
