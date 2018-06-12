@@ -7,7 +7,6 @@
 
 // dependencies
 var AWS = require('aws-sdk');
-var util = require('util');
 var uuidV4 = require('uuid/v4');
 
 // Get reference to AWS clients
@@ -19,82 +18,52 @@ exports.handler = (event, context, callback) => {
     var _returnObj = {},
         _id = uuidV4();
 
-    if (event.clientId !== undefined && event.status !== undefined && event.sourceId !== undefined) {
-        var _errorStatus,
-            _errorMessage;
+    if (event.firstName !== undefined && event.lastName !== undefined && event.email !== undefined) {
 
-        if (event.postResponse !== undefined) {
-            _errorStatus = (event.postResponse.statusCode !== 200) ? 'ERROR' : event.status,
-                _errorMessage = (event.postResponse.statusCode !== 200) ? event.postResponse.statusCode + ' (RESPONSE BODY)' + event.postResponse.body: event.errorMessage;
-
-        } else {
-            _errorMessage = event.sourceObject;
-            _errorStatus = event.status;
-        }
-
-
-        insertLog({
+        insertRegistration({
             id: _id,
-            clientId: event.clientId,
-            status: 'PROCESSING',
-            //payload: event.payload,
-            //errorMessage: _errorMessage,
-            sourceId: event.sourceId,
-            stagingRecordId: event.stagingRecordId,
-            auraRecordId: event.auraRecordId,
-            clientRecordId: event.clientRecordId//,
-            //newRecordId: event.newRecordId
+            firstName: event.firstName,
+            lastName: event.lastName,
+            email: event.email,
+            serialNumbers: event.serialNumbers
         }, function(err, data) {
             if (err !== null) {
 
-                callback(null, {
-                    sourceId: event.sourceId,
-                    status: 'ERROR',
-                    error: err
-                });
+                _returnObj.headers = {};
+                _returnObj.statusCode = 400;
+                _returnObj.body = 'ERROR - Fail to Insert';
+
+                callback(null, _returnObj);
             }
 
-            callback(null, {
-                logId: _id,
-                clientId: event.clientId,
-                type: event.type,
-                directionTo: event.directionTo,
-                errorCode: 0,
-                status: 'SUCCESS',
-                sourceId: event.sourceId,
-                auraRecordId: event.auraRecordId,
-                clientRecordId: event.clientRecordId
-            });
+            _returnObj.headers = {};
+            _returnObj.statusCode = 200;
+            _returnObj.body = 'SUCCESS';
+
+            callback(null, _returnObj);
 
         });
     } else {
         _returnObj.headers = {};
         _returnObj.statusCode = 400;
-        _returnObj.body = 'ERROR';
+        _returnObj.body = 'ERROR - Missing parameters';
 
         callback(null, _returnObj);
     }
 
 };
 
-function insertLog(params, fn) {
-    var ms = (new Date).getTime();
+function insertRegistration(params, fn) {
 
     dynamodb.put({
-        TableName: process.env.LOG_TABLE,
+        TableName: 'BWProductRegistration',
         Item: {
-            "Id": params.id,
-            "sourceId": params.sourceId,
-            "clientId": params.clientId,
-            "status": params.status,
-            "errorMessage": (params.errorMessage !== '') ? params.errorMessage: 'no errors',
-            "payload": params.payload,
-            "stagingRecordId": params.stagingRecordId,
-            "auraRecordId": params.auraRecordId,
-            "clientRecordId": params.clientRecordId,
-            "newRecordId": params.newRecordId,
-            "dateCreated": Date(),
-            "timeToLive": ms + 86400000
+            "id": params.id,
+            "firstName": params.firstName,
+            "lastName": params.lastName,
+            "email": params.email,
+            "serialNumbers": params.serialNumbers,
+            "dateCreated": Date()
         }
     }, function(err, data) {
         return fn(err, data);
