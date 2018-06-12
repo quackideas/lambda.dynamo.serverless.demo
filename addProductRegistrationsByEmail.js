@@ -18,7 +18,7 @@ exports.handler = (event, context, callback) => {
     var _returnObj = {},
         _id = uuidV4();
 
-    if (event.firstName !== undefined && event.lastName !== undefined && event.email !== undefined) {
+    if (event.email !== '') {
 
         insertRegistration({
             id: _id,
