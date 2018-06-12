@@ -31,8 +31,8 @@ exports.handler = (event, context, callback) => {
 
                 _returnObj.headers = {};
                 _returnObj.statusCode = 400;
-                _returnObj.body = 'ERROR - Fail to Insert';
-                
+                _returnObj.body = 'A_ERROR - Fail to Insert';
+
                 console.log(err);
                 console.log(data);
 
@@ -49,7 +49,7 @@ exports.handler = (event, context, callback) => {
     } else {
         _returnObj.headers = {};
         _returnObj.statusCode = 400;
-        _returnObj.body = 'ERROR - Missing parameters';
+        _returnObj.body = 'B_ERROR - Missing parameters';
 
         callback(null, _returnObj);
     }
