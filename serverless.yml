@@ -1,4 +1,4 @@
-service: cloud-ams-api
+service: sujemma-test-api
 
 provider:
   name: aws
