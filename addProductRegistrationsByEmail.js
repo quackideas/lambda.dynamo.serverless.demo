@@ -32,6 +32,9 @@ exports.handler = (event, context, callback) => {
                 _returnObj.headers = {};
                 _returnObj.statusCode = 400;
                 _returnObj.body = 'ERROR - Fail to Insert';
+                
+                console.log(err);
+                console.log(data);
 
                 callback(null, _returnObj);
             }
