@@ -24,7 +24,7 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 5
           WriteCapacityUnits: 5
-        TableName: ProductRegistration
+        TableName: BWProductRegistration
 
 functions:
   getProductRegistrationsByEmail:
